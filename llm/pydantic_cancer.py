@@ -1,6 +1,6 @@
-from enum import StrEnum, auto
+from enum import StrEnum
 from typing import Annotated
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field, StringConstraints
 
 ###############################################################################
