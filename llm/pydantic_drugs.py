@@ -5,24 +5,34 @@ from pydantic import BaseModel, Field, StringConstraints
 ###############################################################################
 # Evidence citation
 ###############################################################################
-class RxClassCancer(StrEnum):
-    CHEMO = 'Cytotoxic chemotherapy'
-    CHECKPOINT = 'Checkpoint inhibitors, especially PD-1, PDL-1, CTLA-4'
-    CYTOKINE = 'Cytokine therapy, especially IL-2 and interferon alpha'
-    CAR_T = 'Chimeric antigen receptor (CAR-T)'
-    OTHER = 'Other drug indicated for treatment of cancer(s)'
-    NONE = 'None of the above'
-
-
-###############################################################################
-# Spans
 class SpanAugmentedMention(BaseModel):
-    has_mention: bool | None  # True, False, or None
-    spans: list[str]
+    has_mention: bool = Field(
+        False,
+        description="Whether there is any mention of this variable in the text."
+    )
+    spans: list[str] = Field(
+        default_factory=list,
+        description="The text spans where this variable is mentioned."
+    )
+
+class RxFrequency(StrEnum):
+    QD = "QD"       # 1X (once daily)
+    BID = "BID"     # 2X (twice daily)
+    TID = "TID"     # 3X (three times daily)
+    QID = "QID"     # 4X (four times daily)
+    QOD = "QOD"     # 1/2X (every other day)
+    Q6H = "Q6H"     # 4X (every 6 hours)
+    Q8H = "Q8H"     # 3X (every 8 hours)
+    Q12H = "Q12H"   # 2X (every 12 hours)
+    WEEKLY = "WEEKLY" # 1/7X (once every 7 days)
+    Q2W = "Q2W"       # 1/14X (once every 2 weeks = 14 days)
+    Q4W = "Q4W"       # 1/28X (once every 4 weeks = 28 days)
+    MONTHLY = "MONTHLY" # 1/28X (once every 4 weeks = 28 days)
+    OTHER = "OTHER" # use timing_text
+    NONE = "None of the above"
 
 ###############################################################################
 # MedicationRequest.status
-
 class RxStatus(StrEnum):
     """
     Medication Status (including Intent because chart review is NOT always identical to Med Request)

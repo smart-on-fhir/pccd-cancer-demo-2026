@@ -1,5 +1,6 @@
 from enum import StrEnum, auto
 from typing import Annotated
+from typing import Optional, List
 from pydantic import BaseModel, Field, StringConstraints
 
 ###############################################################################
@@ -23,21 +24,21 @@ ICDOTopographyCode = Annotated[
     StringConstraints(pattern=r"^C\d{2}(\.\d)?$")
 ]
 
-class CancerTopology(SpanAugmentedMention):
+class CancerTopologyMention(SpanAugmentedMention):
     """
     ICD-O Oncology topography for a cancer lesion, plus whether this site
     represents the primary tumor or a metastatic tumor.
     """
-    icdo_topography_code: ICDOTopographyCode = Field(
+    code: ICDOTopographyCode = Field(
         None,
         description=(
             "ICD-O topography code (Cxx or Cxx.x) for the anatomic site of the malignant neoplasm, "
             "e.g., C18.0 for cecum."
         ),
     )
-    icdo_topography_description: str = Field(
+    description: str = Field(
         None,
-        description="Human-readable ICD-O anatomic site description corresponding to the topography code.",
+        description="Human-readable ICD-O anatomic site description corresponding to the topography code."
     )
 
 ###############################################################################
@@ -48,20 +49,20 @@ ICDOMorphologyCode = Annotated[
     StringConstraints(pattern=r"^\d{4}/[0-9]$")
 ]
 
-class CancerMorphology(BaseModel):
+class CancerMorphologyMention(BaseModel):
     """
     ICD-O Oncology Morphology (Histology + Behavior).
 
     Morphology represents the microscopic tumor cell type (e.g., adenocarcinoma,
     squamous cell carcinoma, lymphoma) combined with the behavior code.
     """
-    icdo_morphology_code: ICDOMorphologyCode = Field(
+    code: ICDOMorphologyCode = Field(
         None,
         description=(
             "ICD-O morphology code (M-####/x). Example: 8140/3 = Adenocarcinoma, NOS (malignant)."
         )
     )
-    icdo_morphology_description: str = Field(
+    description: str = Field(
         None,
         description="Human-readable ICD-O histologic type (e.g., 'Adenocarcinoma, NOS')."
     )
@@ -69,7 +70,7 @@ class CancerMorphology(BaseModel):
 ###############################################################################
 # Behavior
 ###############################################################################
-class CancerBehaviorCode(StrEnum):
+class ICDOBehaviorCode(StrEnum):
     BENIGN = "/0"
     UNCERTAIN = "/1"
     IN_SITU = "/2"
@@ -77,11 +78,16 @@ class CancerBehaviorCode(StrEnum):
     MALIGNANT_METASTATIC = "/6"
     MALIGNANT_RECURRENT = "/9"
 
-class CancerBehavior(SpanAugmentedMention):
-    behavior: CancerBehaviorCode = Field(
+class CancerBehaviorMention(SpanAugmentedMention):
+    behavior: ICDOBehaviorCode = Field(
         None,
         description="ICD-O slash behavior code (e.g., /3 = malignant primary site)."
     )
+    description: str = Field(
+        None,
+        description="Human-readable description of the cancer behavior."
+    )
+
 
 ###############################################################################
 # Grade
@@ -93,7 +99,7 @@ class CancerGradeCode(StrEnum):
     GRADE_IV = "4"    # Undifferentiated / Anaplastic
     GRADE_UNKNOWN = "9"  # Not determined / Cannot be assessed
 
-class CancerGrade(SpanAugmentedMention):
+class CancerGradeMention(SpanAugmentedMention):
     """
     ICD-O Oncology Grade (Tumor cell differentiation grade).
 
@@ -110,7 +116,7 @@ class CancerGrade(SpanAugmentedMention):
     )
     description: str = Field(
         None,
-        description="Human-readable ICD-O description of the tumor grade.",
+        description="Human-readable ICD-O description of the tumor grade."
     )
 
 ###############################################################################
@@ -144,8 +150,7 @@ class MStage(StrEnum):
     M1A = "M1a"
     M1B = "M1b"
 
-
-class CancerTNMStage(BaseModel):
+class CancerTNMStageMention(SpanAugmentedMention):
     """
     TNM cancer staging using ICD-O / AJCC-style T, N, and M categories.
 
@@ -170,7 +175,7 @@ class ClinicalStage(StrEnum):
     STAGE_IIIB = "IIIB"
     STAGE_IV = "IV"
 
-class CancerClinicalStage(BaseModel):
+class CancerClinicalStage(SpanAugmentedMention):
     """
     Clinical stage grouping using ICD-O / AJCC-style global stage categories.
     These represent the overall clinical stage (not pathologic stage).
@@ -184,4 +189,86 @@ class CancerClinicalStage(BaseModel):
     stage: ClinicalStage = Field(
         None,
         description="ICD-O / AJCC clinical stage group (0, IA, IB, IIA, IIB, IIIA, IIIB, IV)."
+    )
+    description: str = Field(
+        None,
+        description="Human-readable description of the clinical stage."
+    )
+
+###############################################################################
+# Treatment: RxClass Cancer
+###############################################################################
+class RxClassCancer(StrEnum):
+    CHEMO = 'Cytotoxic chemotherapy'
+    CHECKPOINT = 'Checkpoint inhibitors, especially PD-1, PDL-1, CTLA-4'
+    CYTOKINE = 'Cytokine therapy, especially IL-2 and interferon alpha'
+    CAR_T = 'Chimeric antigen receptor (CAR-T)'
+    OTHER = 'Other drug indicated for treatment of cancer(s)'
+    NONE = 'None of the above'
+
+###############################################################################
+# Surgery
+###############################################################################
+class SurgicalType(StrEnum):
+    BIOPSY = "BIOPSY"
+    RESECTION = "RESECTION"
+    DEBULKING = "DEBULKING"
+    ABLATION = "ABLATION"              # LITT, RFA, etc.
+    ENDOSCOPIC = "ENDOSCOPIC"
+    CRANIOTOMY = "CRANIOTOMY"
+    OTHER = "OTHER"
+    NOT_MENTIONED = "NOT_MENTIONED"
+
+class SurgicalApproach(StrEnum):
+    OPEN = "OPEN"
+    AWAKE = "AWAKE"
+    ENDOSCOPIC = "ENDOSCOPIC"
+    STEREOTACTIC = "STEREOTACTIC"
+    LASER = "LASER"
+    KEYHOLE = "KEYHOLE"
+    NOT_MENTIONED = "NOT_MENTIONED"
+
+class SurgicalExtentOfResection(StrEnum):
+    GROSS_TOTAL = "GROSS_TOTAL"
+    SUBTOTAL = "SUBTOTAL"
+    PARTIAL = "PARTIAL"
+    BIOPSY_ONLY = "BIOPSY_ONLY"
+    SUPRATOTAL = "SUPRATOTAL"          # used in LGG for seizure control
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+    NOT_MENTIONED = "NOT_MENTIONED"
+
+class CancerSurgeryMention(SpanAugmentedMention):
+    """
+    Structured representation of a surgical procedure performed for a cancer
+    (e.g., low-grade glioma). Includes surgical type, approach, and extent of
+    resection when identifiable from the clinical note.
+    """
+    surgical_type: SurgicalType = Field(
+        default=SurgicalType.NOT_MENTIONED,
+        description="High-level categorization of the surgery (biopsy, resection, ablation, etc.)"
+    )
+
+    approach: SurgicalApproach = Field(
+        default=SurgicalApproach.NOT_MENTIONED,
+        description="Technical approach used during the surgery (open, awake, stereotactic, laser)."
+    )
+
+    extent_of_resection: SurgicalExtentOfResection = Field(
+        default=SurgicalExtentOfResection.NOT_MENTIONED,
+        description="Reported extent of tumor resection."
+    )
+
+    anatomical_site: Optional[str] = Field(
+        default=None,
+        description="Anatomical site of surgery (e.g., 'left frontal lobe', 'right temporal lobe')."
+    )
+
+    technique_details: Optional[str] = Field(
+        default=None,
+        description="Additional operative details (e.g., 'intraoperative mapping', 'iMRI-guided')."
+    )
+
+    complications: Optional[str] = Field(
+        default=None,
+        description="Intraoperative or postoperative complications if mentioned."
     )
