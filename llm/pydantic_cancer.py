@@ -2,7 +2,6 @@ from enum import StrEnum, auto
 from typing import Annotated
 from pydantic import BaseModel, Field, StringConstraints
 
-
 ###############################################################################
 # Evidence citation
 ###############################################################################
@@ -115,7 +114,7 @@ class CancerGrade(SpanAugmentedMention):
     )
 
 ###############################################################################
-# TNM Pathology Stage
+# TNM Stage (Pathological Stage)
 ###############################################################################
 class TStage(StrEnum):
     TX = "TX"

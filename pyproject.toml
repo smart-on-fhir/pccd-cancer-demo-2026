@@ -32,3 +32,7 @@ dev = [
     "black",
     "pylint",    
 ]
+
+[tool.flit.sdist]
+# change this to the name of the study folder inside of the module directory
+include = ["cumulus_library_cancer/"]
