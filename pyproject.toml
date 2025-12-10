@@ -1,14 +1,23 @@
+# This is our stock pyproject.toml, which we use for installing dependencies and
+# packaging. You don't have to touch this if you don't want to! But if you're
+# making a distributable, or need extra python dependencies, this is a good
+# place to put that info.
+
 [project]
-name = "pccd-cancer-demo-2026"
+# Change this to reference the name of your study
+name = "cumulus-library-glioma"
+# You can leave this alone to start. Only worry about it when you need to create
+# a package for other users
 version = "0.1.0"
 requires-python = ">= 3.11"
 # If you need python libraries, add them here
 dependencies = [
-    "pandas",
-    "pydantic"
+    "cumulus-library >= 5.2b1",
+    "sqlfluff >= 2.3.4",
+    "fhirclient >= 4.3.2"
 ]
-
-description = "PCCD Pediatric Oncology Demonstration Feb 2026"
+# You can alter this to discuss your study specifics
+description = "Cumulus Library for Glioma (PCCD Feb 2026)"
 readme = "README.md"
 license = { text="Apache License 2.0" }
 classifiers = [
@@ -19,9 +28,10 @@ classifiers = [
 ]
 
 [project.urls]
-Home = "https://github.com/smart-on-fhir/pccd-cancer-demo-2026"
-Documentation = "https://github.com/smart-on-fhir/pccd-cancer-demo-2026"
-Source = "https://github.com/smart-on-fhir/pccd-cancer-demo-2026"
+Home = "https://smarthealthit.org/cumulus-a-universal-sidecar-for-a-smart-learning-healthcare-system/"
+Documentation = "https://docs.smarthealthit.org/cumulus/"
+# Change this source to reference your github URL
+Source = "cumulus-library-glioma"
 
 [build-system]
 requires = ["flit_core >=3.4,<4"]
@@ -30,9 +40,9 @@ build-backend = "flit_core.buildapi"
 [project.optional-dependencies]
 dev = [
     "black",
-    "pylint",    
+    "pylint",
 ]
 
 [tool.flit.sdist]
 # change this to the name of the study folder inside of the module directory
-include = ["cumulus_library_cancer/"]
+include = ["cumulus_library_glioma/"]

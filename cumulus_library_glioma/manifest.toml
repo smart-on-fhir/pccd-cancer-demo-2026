@@ -1,0 +1,74 @@
+# 'study_prefix' should be a string at the start of each table. We'll use this
+# to clean up queries, so it should be unique. Name your tables in the following
+# format: [study_prefix]__[table_name]. It should probably, but not necessarily,
+# be the same name as the folder the study definition is in.
+study_prefix = "ibd"
+
+
+# The following section describes all tables that should be generated directly
+# from SQL files.
+
+[file_config.file_names]
+"Glioma valuesets" = [
+    "athena/glioma__valueset_topography.sql",
+]
+"Glioma inclusion criteria for study population" = [
+    "athena/glioma__include_gender.sql",
+    "athena/glioma__include_age_at_visit.sql",
+    "athena/glioma__include_utilization.sql",
+    "athena/glioma__include_study_period.sql",
+]
+"Glioma study period" = [
+    "athena/glioma__cohort_study_period.sql",
+]
+"Glioma study population" = [
+    "athena/glioma__cohort_study_population.sql",
+]
+#"Glioma study population (dx, rx, lab, doc, diag, GIC)" = [
+#    "athena/glioma__cohort_study_population_dx.sql",
+#    "athena/glioma__cohort_study_population_rx.sql",
+#    "athena/glioma__cohort_study_population_lab.sql",
+#    "athena/glioma__cohort_study_population_doc.sql",
+#    "athena/glioma__cohort_study_population_diag.sql",
+#    "athena/glioma__cohort_study_population_proc.sql",
+#    "athena/glioma__cohort_study_population_gic.sql",
+#]
+#"Glioma cohorts (dx, rx, doc, diag)" = [
+#    "athena/glioma__cohort_dx.sql",
+#    "athena/glioma__cohort_rx.sql"
+#]
+#"Glioma include (dx before rx)" = [
+#    "athena/glioma__cohort_include.sql"
+#]
+#"Glioma cohorts includes (lab, doc, diag)" = [
+#    "athena/glioma__cohort_lab.sql",
+#    "athena/glioma__cohort_doc.sql",
+#    "athena/glioma__cohort_diag.sql",
+#]
+#"Glioma dates FHIR encounters" = [
+#    "athena/glioma__fhir_dates.sql"
+#]
+#"LLM results (1/5) raw "    = ["athena/glioma__gpt4_raw.sql"]
+#"LLM results (2/5) parsed"  = ["athena/glioma__gpt4_parsed.sql"]
+#"LLM results (3/5) valueset"= ["athena/glioma__gpt4_valueset.sql"]
+#"LLM results (4/5) FHIR"    = ["athena/glioma__gpt4_fhir.sql"]
+#"LLM results (5/5) dates"   = ["athena/glioma__gpt4_dates.sql"]
+#"Glioma Treatment response (1/2)" = ["athena/glioma__tx_responders.sql"]
+#"Glioma Treatment response (2/2)" = ["athena/glioma__tx_responders_views.sql"]
+#"GIC variant interpretation" = [
+#    "athena/glioma__cohort_gic.sql",
+#    "athena/glioma__cohort_gic_severity.sql",
+#]
+#"Glioma powerset patient counts" = [
+#    "athena/glioma__count_encounter_lab.sql",
+#    "athena/glioma__count_patient_lab.sql",
+#    "athena/glioma__count_patient_ade.sql",
+#    "athena/glioma__count_patient_anti_tnf_response_cd.sql",
+#    "athena/glioma__count_patient_anti_tnf_response_history.sql",
+#    "athena/glioma__count_patient_anti_tnf_response_uc.sql",
+#    "athena/glioma__count_patient_rx_effectiveness.sql",
+#    "athena/glioma__count_patient_ibd_genetics.sql",
+#]
+
+#[export_config]
+

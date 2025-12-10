@@ -1,4 +1,4 @@
-create or replace view ibd__include_gender as select * from (values
+create or replace view glioma__include_gender as select * from (values
 ('http://hl7.org/fhir/ValueSet/administrative-gender', 'female', 'female')
 ,('http://hl7.org/fhir/ValueSet/administrative-gender', 'male', 'male')
 ,('http://hl7.org/fhir/ValueSet/administrative-gender', 'other', 'other')
