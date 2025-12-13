@@ -9,78 +9,39 @@ study_prefix = "glioma"
 # from SQL files.
 
 [file_config.file_names]
-"IBD valuesets" = [
-    "athena/ibd__valueset_rx.sql",
-    "athena/ibd__valueset_dx.sql",
-    "athena/ibd__valueset_variant_severity.sql",
-    "athena/ibd__valueset_paris.sql",
-    "athena/ibd__valueset_paris_ibd_type.sql",
-    "athena/ibd__valueset_paris_cd_location.sql",
-    "athena/ibd__valueset_paris_uc_location.sql",
-    "athena/ibd__valueset_paris_cd_behavior.sql",
-    "athena/ibd__valueset_paris_uc_severity.sql",
-    "athena/ibd__valueset_doc.sql",
-    "athena/ibd__valueset_report.sql",
+"Glioma valuesets" = [
+    "athena/glioma__valueset_topography.sql",
 ]
-"IBD valueset for case definition" = [
-    "athena/ibd__casedef_dx.sql",
+"Glioma inclusion criteria for study population" = [
+    "athena/glioma__include_gender.sql",
+    "athena/glioma__include_age_at_visit.sql",
+    "athena/glioma__include_utilization.sql",
+    "athena/glioma__include_study_period.sql",
 ]
-"IBD inclusion criteria for study population" = [
-    "athena/ibd__include_gender.sql",
-    "athena/ibd__include_age_at_visit.sql",
-    "athena/ibd__include_utilization.sql",
-    "athena/ibd__include_study_period.sql",
+"Glioma study period" = [
+    "athena/glioma__cohort_study_period.sql",
 ]
-"IBD study period" = [
-    "athena/ibd__cohort_study_period.sql",
+"Glioma study population" = [
+    "athena/glioma__cohort_study_population.sql",
 ]
-"IBD study population" = [
-    "athena/ibd__cohort_study_population.sql",
+"Glioma study population (dx, rx, lab, doc, diag)" = [
+    "athena/glioma__cohort_study_population_dx.sql",
+    "athena/glioma__cohort_study_population_rx.sql",
+    "athena/glioma__cohort_study_population_lab.sql",
+    "athena/glioma__cohort_study_population_doc.sql",
+    "athena/glioma__cohort_study_population_diag.sql",
+    "athena/glioma__cohort_study_population_proc.sql",
 ]
-"IBD study population (dx, rx, lab, doc, diag, GIC)" = [
-    "athena/ibd__cohort_study_population_dx.sql",
-    "athena/ibd__cohort_study_population_rx.sql",
-    "athena/ibd__cohort_study_population_lab.sql",
-    "athena/ibd__cohort_study_population_doc.sql",
-    "athena/ibd__cohort_study_population_diag.sql",
-    "athena/ibd__cohort_study_population_proc.sql",
-    "athena/ibd__cohort_study_population_gic.sql",
+"Glioma cohorts (dx, rx, doc, diag)" = [
+    "athena/glioma__cohort_casedef.sql",
+    "athena/glioma__cohort_rx.sql"
 ]
-"IBD cohorts (dx, rx, doc, diag)" = [
-    "athena/ibd__cohort_dx.sql",
-    "athena/ibd__cohort_rx.sql"
+"Glioma include (dx before rx)" = [
+    "athena/glioma__cohort_include.sql"
 ]
-"IBD include (dx before rx)" = [
-    "athena/ibd__cohort_include.sql"
-]
-"IBD cohorts includes (lab, doc, diag)" = [
-    "athena/ibd__cohort_lab.sql",
-    "athena/ibd__cohort_doc.sql",
-    "athena/ibd__cohort_diag.sql",
-]
-"IBD dates FHIR encounters" = [
-    "athena/ibd__fhir_dates.sql"
-]
-"LLM results (1/5) raw "    = ["athena/ibd__gpt4_raw.sql"]
-"LLM results (2/5) parsed"  = ["athena/ibd__gpt4_parsed.sql"]
-"LLM results (3/5) valueset"= ["athena/ibd__gpt4_valueset.sql"]
-"LLM results (4/5) FHIR"    = ["athena/ibd__gpt4_fhir.sql"]
-"LLM results (5/5) dates"   = ["athena/ibd__gpt4_dates.sql"]
-"IBD Treatment response (1/2)" = ["athena/ibd__tx_responders.sql"]
-"IBD Treatment response (2/2)" = ["athena/ibd__tx_responders_views.sql"]
-"GIC variant interpretation" = [
-    "athena/ibd__cohort_gic.sql",
-    "athena/ibd__cohort_gic_severity.sql",
-]
-"IBD powerset patient counts" = [
-    "athena/ibd__count_encounter_lab.sql",
-    "athena/ibd__count_patient_lab.sql",
-    "athena/ibd__count_patient_ade.sql",
-    "athena/ibd__count_patient_anti_tnf_response_cd.sql",
-    "athena/ibd__count_patient_anti_tnf_response_history.sql",
-    "athena/ibd__count_patient_anti_tnf_response_uc.sql",
-    "athena/ibd__count_patient_rx_effectiveness.sql",
-    "athena/ibd__count_patient_ibd_genetics.sql",
+"Glioma powerset patient counts" = [
+    "athena/glioma__count_encounter_lab.sql",
+    "athena/glioma__count_patient_lab.sql",
 ]
 
 #[export_config]
