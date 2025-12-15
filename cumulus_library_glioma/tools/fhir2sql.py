@@ -21,7 +21,7 @@ def name_suffix(name: str, suffix=None) -> str:
 
 def name_simple(table) -> str:
     simple = table
-    for part in ['cohort_', 'count_', 'valueset_']:
+    for part in ['cohort_', 'valueset_', 'count_', 'cube_', ]:
         simple = simple.replace(name_prefix(part), '')
     return simple.replace(name_prefix(''), '')
 
@@ -41,7 +41,7 @@ def name_study_variables(suffix=None) -> str:
     return name_join('cohort', table)
 
 def name_cube(table: str, suffix: str = None) -> str:
-    part = f'count_{suffix}' if suffix else 'count'
+    part = f'cube_{suffix}' if suffix else 'cube'
     return name_join(part, table)
 
 def name_valueset(table: str, suffix=None) -> str:

@@ -67,9 +67,14 @@ def make() -> List[Path]:
     return [
         cube_patient(source_table='glioma__cohort_casedef',
                      table_cols=['dx_display', 'dx_category_code',
+                                 'age_at_visit',
+                                 'gender', 'race_display']),
+
+        cube_encounter(source_table='glioma__cohort_casedef',
+                     table_cols=['dx_display', 'dx_category_code',
+                                 'age_at_dx_min',
                                  'enc_period_ordinal', 'enc_class_code']),
     ]
 
 if __name__ == "__main__":
     target_files = make()
-    # TODO future: study builder manifest.toml

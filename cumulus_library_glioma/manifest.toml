@@ -10,7 +10,8 @@ study_prefix = "glioma"
 
 [file_config.file_names]
 "Glioma valuesets" = [
-    "athena/glioma__valueset_topography.sql",
+    "athena/glioma__valueset_casedef.sql",
+    "athena/glioma__valueset_morphology.sql",
 ]
 "Glioma inclusion criteria for study population" = [
     "athena/glioma__include_gender.sql",
@@ -34,14 +35,10 @@ study_prefix = "glioma"
 ]
 "Glioma cohorts (dx, rx, doc, diag)" = [
     "athena/glioma__cohort_casedef.sql",
-    "athena/glioma__cohort_rx.sql"
 ]
-"Glioma include (dx before rx)" = [
-    "athena/glioma__cohort_include.sql"
-]
-"Glioma powerset patient counts" = [
-    "athena/glioma__count_encounter_lab.sql",
-    "athena/glioma__count_patient_lab.sql",
+"Glioma cube counts" = [
+    "athena/glioma__cube_patient_casedef.sql",
+    "athena/glioma__cube_encounter_casedef.sql",
 ]
 
 #[export_config]
