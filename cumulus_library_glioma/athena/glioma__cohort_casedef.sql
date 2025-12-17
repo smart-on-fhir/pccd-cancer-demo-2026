@@ -19,7 +19,7 @@ with cohort as
             DX.subject_ref,
             DX.condition_ref,
             DX.encounter_ref
-    from    glioma__cohort_study_population as SP,
+    from    glioma__cohort_study_population_dx as SP,
             glioma__valueset_casedef as casedef,
             core__condition as DX
     where   DX.code = casedef.code
