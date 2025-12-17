@@ -9,23 +9,23 @@ study_prefix = "glioma"
 # from SQL files.
 
 [file_config.file_names]
-"Glioma valuesets" = [
+"valuesets" = [
     "athena/glioma__valueset_casedef.sql",
     "athena/glioma__valueset_morphology.sql",
 ]
-"Glioma inclusion criteria for study population" = [
+"inclusion criteria for study population" = [
     "athena/glioma__include_gender.sql",
     "athena/glioma__include_age_at_visit.sql",
     "athena/glioma__include_utilization.sql",
     "athena/glioma__include_study_period.sql",
 ]
-"Glioma study period" = [
+"study period" = [
     "athena/glioma__cohort_study_period.sql",
 ]
-"Glioma study population" = [
+"study population" = [
     "athena/glioma__cohort_study_population.sql",
 ]
-"Glioma study population (dx, rx, lab, doc, diag)" = [
+"study population (dx, rx, lab, doc, diag)" = [
     "athena/glioma__cohort_study_population_dx.sql",
     "athena/glioma__cohort_study_population_rx.sql",
     "athena/glioma__cohort_study_population_lab.sql",
@@ -33,10 +33,25 @@ study_prefix = "glioma"
     "athena/glioma__cohort_study_population_diag.sql",
     "athena/glioma__cohort_study_population_proc.sql",
 ]
-"Glioma cohorts (dx, rx, doc, diag)" = [
+"COHORT matching glioma case definition" = [
     "athena/glioma__cohort_casedef.sql",
 ]
-"Glioma cube counts" = [
+"COHORT glioma case definition (pre, index, index_post, post)" = [
+    "athena/glioma__cohort_casedef_pre.sql",
+    "athena/glioma__cohort_casedef_index.sql",
+    "athena/glioma__cohort_casedef_index_post.sql",
+    "athena/glioma__cohort_casedef_post.sql",
+]
+"SAMPLE glioma case definition (pre, index, index_post, post)" = [
+    "athena/glioma__sample_casedef_pre.sql",
+    "athena/glioma__sample_casedef_index.sql",
+    "athena/glioma__sample_casedef_index_post.sql",
+    "athena/glioma__sample_casedef_post.sql",
+]
+"COMORBIDITIES of glioma cohort" = [
+    "athena/glioma__cohort_casedef_comorbidity.sql",
+]
+"cube counts" = [
     "athena/glioma__cube_patient_casedef.sql",
     "athena/glioma__cube_encounter_casedef.sql",
 ]
