@@ -14,19 +14,20 @@
 
 create table glioma__cohort_casedef_pre as
 WITH
-first_visit as (
+first_match as (
     select      min(enc_period_start_day) as index_date,
                 subject_ref
     from        glioma__cohort_casedef
+    where       dx_category_code is NOT NULL
     group by    subject_ref
 )
 select
-        first_visit.index_date,
+        first_match.index_date,
         SP.*
 from
         glioma__cohort_study_population as SP,
-        first_visit
+        first_match
 where
-        SP.subject_ref = first_visit.subject_ref
-and     SP.enc_period_start_day < first_visit.index_date
+        SP.subject_ref = first_match.subject_ref
+and     SP.enc_period_start_day < first_match.index_date
 ;
