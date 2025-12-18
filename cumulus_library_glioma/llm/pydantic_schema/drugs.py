@@ -1,20 +1,21 @@
-from enum import StrEnum, auto
-from typing import Annotated
-from pydantic import BaseModel, Field, StringConstraints
+from enum import StrEnum
+from pydantic import Field
+from .mention import SpanAugmentedMention
 
 ###############################################################################
-# Evidence citation
+# Treatment: RxClass Cancer
 ###############################################################################
-class SpanAugmentedMention(BaseModel):
-    has_mention: bool = Field(
-        False,
-        description="Whether there is any mention of this variable in the text."
-    )
-    spans: list[str] = Field(
-        default_factory=list,
-        description="The text spans where this variable is mentioned."
-    )
+class RxClassCancer(StrEnum):
+    CHEMO = 'Cytotoxic chemotherapy'
+    CHECKPOINT = 'Checkpoint inhibitors, especially PD-1, PDL-1, CTLA-4'
+    CYTOKINE = 'Cytokine therapy, especially IL-2 and interferon alpha'
+    CAR_T = 'Chimeric antigen receptor (CAR-T)'
+    OTHER = 'Other drug indicated for treatment of cancer(s)'
+    NONE = 'None of the above'
 
+###############################################################################
+# Generic
+###############################################################################
 class RxFrequency(StrEnum):
     QD = "QD"       # 1X (once daily)
     BID = "BID"     # 2X (twice daily)
@@ -46,7 +47,6 @@ class RxStatus(StrEnum):
     CANCELED = "Medication order was canceled/withdrawn before any doses were administered."
     ON_HOLD = "Medication is temporarily paused (on-hold, suspended, or interrupted)."
     NONE = "None of the above"
-
 
 ###############################################################################
 # MedicationRequest.category
@@ -157,7 +157,6 @@ class RxQuantity(SpanAugmentedMention):
 
 ###############################################################################
 # Treatment Phase
-
 class TreatmentPhase(StrEnum):
     """
     Treatment Phase
@@ -255,10 +254,8 @@ class MedicationMention(SpanAugmentedMention):
         description='Numeric amount of medication prescribed or administered (FHIR Quantity.value)'
     )
 
-class RxClassMention(MedicationMention):
-    # abstract, extend to override
-    drug_type: str | object | None = drug_type_field()
-
-class IngredientMention(MedicationMention):
-    # abstract, extend to override
-    ingredient: str | object | None = ingredient_field()
+###############################################################################
+# Cancer Drug Mention
+###############################################################################
+class RxClassCancerMention(MedicationMention):
+    rx_class: RxClassCancer = drug_type_field()

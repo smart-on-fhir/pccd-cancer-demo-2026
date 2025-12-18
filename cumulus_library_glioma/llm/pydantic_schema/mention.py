@@ -1,5 +1,3 @@
-from enum import StrEnum, auto
-from typing import Annotated
 from pydantic import BaseModel, Field, StringConstraints
 
 ###############################################################################
@@ -14,4 +12,3 @@ class SpanAugmentedMention(BaseModel):
         default_factory=list,
         description="The text spans where this variable is mentioned."
     )
-
