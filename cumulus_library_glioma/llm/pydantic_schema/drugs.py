@@ -169,11 +169,11 @@ class TreatmentPhase(StrEnum):
 ###############################################################################
 # helper: Describe Drug Type (class or therapy modality) or drug ingredient.
 
-def drug_type_field(default=None, description=None) -> str | None:
-    return Field(default=default, description=drug_type_desc(description))
+def drug_type_field(default=None, drug_type:str=None) -> str | None:
+    return Field(default=default, description=drug_type_desc(drug_type))
 
-def ingredient_field(default=None, description=None) -> str | None:
-    return Field(default=default, description=ingredient_desc(description))
+def ingredient_field(default=None, ingredient=None) -> str | None:
+    return Field(default=default, description=ingredient_desc(ingredient))
 
 def drug_type_desc(drug_type: str) -> str:
     return clean(
@@ -255,7 +255,10 @@ class MedicationMention(SpanAugmentedMention):
     )
 
 ###############################################################################
-# Cancer Drug Mention
+# Cancer Medication Mention
 ###############################################################################
-class RxClassCancerMention(MedicationMention):
-    rx_class: RxClassCancer = drug_type_field()
+class CancerMedicationMention(MedicationMention):
+    rx_class: RxClassCancer = drug_type_field(
+        default=RxClassCancer.NONE,
+        drug_type='Cancer drug'
+    )

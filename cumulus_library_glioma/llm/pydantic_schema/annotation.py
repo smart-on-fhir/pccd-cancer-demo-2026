@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from .pathology import TopographyMention, MorphologyMention, GradeMention, BehaviorMention
 from .genes import TargetGeneticTestMention, VariantMention
-from .drugs import MedicationMention, RxClassCancerMention
+from .drugs import CancerMedicationMention
 from .surgery import SurgeryMention
 
 class GliomaCaseAnnotation(BaseModel):
@@ -12,10 +12,22 @@ class GliomaCaseAnnotation(BaseModel):
     morphology_mention: MorphologyMention
     behavior_mention: BehaviorMention
     grade_mention: GradeMention
-    target_genetic_test_mention: TargetGeneticTestMention
-    variant_mention: VariantMention
-    rx_class_cancer_mention: RxClassCancerMention
-    surgery_mention: SurgeryMention
+    target_genetic_test_mention: list[TargetGeneticTestMention] = Field(
+        default_factory=list,
+        description="All mentions of Target Genetic Tests."
+    )
+    variant_mention: list[VariantMention] = Field(
+        default_factory=list,
+        description="All mentions of Genetic Variants."
+    )
+    cancer_medication_mention: list[CancerMedicationMention] = Field(
+        default_factory=list,
+        description="All mentions of Cancer Medications."
+    )
+    surgery_mention: list[SurgeryMention] = Field(
+        default_factory=list,
+        description="All mentions of Cancer related surgeries."
+    )
 
 
 
