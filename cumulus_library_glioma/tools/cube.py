@@ -1,79 +1,95 @@
+import os
 from typing import List
 from pathlib import Path
 from cumulus_library.builders.counts import CountsBuilder
 from cumulus_library_glioma.tools import filetool, fhir2sql
 from cumulus_library_glioma.tools.filetool import PREFIX
 
-def cube_patient_min10(source_table='study_population', table_cols=None, table_name=None, min_subject=10) -> Path:
-    return cube_patient(source_table, table_cols, table_name, min_subject)
+MIN_SUBJECTS = int(os.environ.get("MIN_SUBJECTS") or 1)
 
-def cube_encounter(source_table='study_population', table_cols=None, table_name=None, min_subject=1) -> Path:
-    """
-    CUBE counts contain unique numbers of
-        * FHIR Encounter --> "select count(distinct encounter_ref)"
+def cube_fhir_resource(fhir_resource:str, source_table='study_population', table_cols=None, table_name=None, min_subject=MIN_SUBJECTS) -> Path:
+    """Generates a counts table using a template
 
-    :param source_table: line-level cohort to derive counts from
-    :param table_cols: columns to include in the CUBE group by expression
-    :param table_name: output CUBE table
-    :param min_subject: minimum number of subjects to include
-    :return: Path to CUBE table
+    :param min_subject:
+    :param table_name: The name of the table to create. Must start with study prefix
+    :param source_table: The table to create counts data from
+    :param table_cols: The columns from the source table to add to the count table
+    :keyword fhir_resource: The type of FHIR resource to count
+    :keyword min_subject: Minimum number of patients show results for
     """
     if not table_name:
-        table_name = fhir2sql.name_cube(source_table, 'encounter')
+        table_name = fhir2sql.name_cube(source_table, fhir_resource)
 
     table_cols = sorted(list(set(table_cols)))
-    sql = CountsBuilder(PREFIX).count_encounter(
-        table_name=table_name,
-        source_table=source_table,
-        table_cols=table_cols,
-        min_subject=min_subject
+    sql = CountsBuilder(PREFIX).get_count_query(
+            table_name=table_name,
+            source_table=source_table,
+            table_cols=table_cols,
+            min_subject=min_subject,
+            fhir_resource=fhir_resource,
+            filter_resource=True,
+            skip_status_filter=True
     )
-    sql = as_view(sql, table_name)
+    sql = table_as_view(sql, table_name)
     return filetool.save_athena_view(table_name, sql)
 
-def cube_patient(source_table='study_population', table_cols=None, table_name=None, min_subject=1) -> Path:
+def table_as_view(sql:str, table_name:str) -> str:
     """
-    CUBE counts contain unique numbers of
-        * FHIR Patient --> "select count(distinct subject_ref)"
-
-    :param source_table: line-level cohort to derive counts from
-    :param table_cols: columns to include in the CUBE group by expression
-    :param table_name: output CUBE table
-    :param min_subject: minimum number of subjects to include
-    :return: Path to CUBE table
-    """
-    if not table_name:
-        table_name = fhir2sql.name_cube(source_table, 'patient')
-
-    table_cols = sorted(list(set(table_cols)))
-    sql = CountsBuilder(PREFIX).count_patient(
-        table_name=table_name,
-        source_table=source_table,
-        table_cols=table_cols,
-        min_subject=min_subject
-    )
-    sql = as_view(sql, table_name)
-    return filetool.save_athena_view(table_name, sql)
-
-def as_view(sql:str, table_name:str) -> str:
-    """
-    Hackish temp replacement for faster dev lifecycle
+    :param sql: Select
+    :param table_name:
+    :return: sql CTAS
     """
     create_table = f'CREATE TABLE {table_name} AS ('
     replace_view = f'CREATE or replace VIEW {table_name} AS '
     return sql.replace(create_table, replace_view).replace(');', ';')
 
+def cube_patient(source_table='study_population', table_cols=None, table_name=None, min_subject=MIN_SUBJECTS) -> Path:
+    return cube_fhir_resource(
+        fhir_resource='patient',
+        source_table=source_table,
+        table_cols=table_cols,
+        table_name=table_name,
+        min_subject=min_subject)
+
+def cube_encounter(source_table='study_population', table_cols=None, table_name=None, min_subject=MIN_SUBJECTS) -> Path:
+    return cube_fhir_resource(
+        fhir_resource='encounter',
+        source_table=source_table,
+        table_cols=table_cols,
+        table_name=table_name,
+        min_subject=min_subject)
+
+def cube_document(source_table='study_population', table_cols=None, table_name=None, min_subject=MIN_SUBJECTS) -> Path:
+    return cube_fhir_resource(
+        fhir_resource='documentreference',
+        source_table=source_table,
+        table_cols=table_cols,
+        table_name=table_name,
+        min_subject=min_subject)
+
 def make() -> List[Path]:
     return [
         cube_patient(source_table='glioma__cohort_casedef',
-                     table_cols=['dx_display', 'dx_category_code',
-                                 'age_at_visit',
-                                 'gender', 'race_display']),
+                     table_cols=['dx_category_code',
+                                 'dx_code',
+                                 'dx_system',
+                                 'dx_display',
+                                 'age_at_dx_min',
+                                 'gender',
+                                 'race_display'],
+                     min_subject=10),
 
         cube_encounter(source_table='glioma__cohort_casedef',
-                     table_cols=['dx_display', 'dx_category_code',
-                                 'age_at_dx_min',
-                                 'enc_period_ordinal', 'enc_class_code']),
+                       table_cols=['enc_class_code',
+                                   'enc_type_display',
+                                   'enc_servicetype_display',
+                                   'enc_period_ordinal']),
+
+        cube_document(source_table='glioma__sample_casedef_index_post',
+                       table_cols=['doc_type_code',
+                                   'doc_type_display',
+                                   'doc_type_system'],
+                      min_subject=10)
     ]
 
 if __name__ == "__main__":
