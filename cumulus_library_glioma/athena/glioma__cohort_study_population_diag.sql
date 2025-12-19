@@ -1,24 +1,3 @@
---    LOINC
---    ##############################################
---    LP75011-4 Lab     (Laboratory)
---    LP7819-8  MICRO   (Microbiology)
---    LP7839-6  PATH    (Pathology)
---    LP29684-5 RAD     (Radiology)
---    LP29708-2 Card    (Cardiology)
-
---    http://terminology.hl7.org/CodeSystem/v2-0074
---    ##############################################
---    BG	Blood Gases
---    BLB	Blood Bank
---    CH	Chemistry
---    GE	Genetics
---    HM	Hematology
---    LAB	Laboratory
---    MB	Microbiology
---    RAD	Radiology
-
---    ##############################################
-
 create table glioma__cohort_study_population_diag as
 with study_diag as  (
  select distinct
@@ -30,6 +9,7 @@ with study_diag as  (
     	diag.code_system                as diag_code_system,
     	diag.code_display               as diag_code_display,
     	diag.effectivedatetime_day      as diag_effectivedatetime_day,
+    	diag.diagnosticreport_ref       as diagnosticreport_ref,
     	diag.result_ref,
     	study_population.*
 	from
