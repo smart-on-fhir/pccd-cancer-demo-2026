@@ -70,7 +70,8 @@ class VariantMention(SpanAugmentedMention):
     """
     hgnc_name: str = Field(
         default=None,
-        description="HGNC hugo gene naming convention")
+        description="HGNC hugo gene naming convention"
+    )
 
     interpretation: VariantInterpretation = Field(
         VariantInterpretation.NOT_MENTIONED,

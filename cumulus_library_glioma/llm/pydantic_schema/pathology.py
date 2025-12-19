@@ -36,7 +36,7 @@ ICDOMorphologyCode = Annotated[
     StringConstraints(pattern=r"^\d{4}/[0-9]$")
 ]
 
-class MorphologyMention(BaseModel):
+class MorphologyMention(SpanAugmentedMention):
     """
     ICD-O Oncology Morphology (Histology + Behavior).
 
