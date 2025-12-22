@@ -1,0 +1,5 @@
+config_type="file_upload"
+[tables.valueset_casedef_upload]
+file = "../resources/valueset_casedef.csv"
+delimiter = ","
+col_types = ["STRING","STRING","STRING"]

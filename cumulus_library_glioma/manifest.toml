@@ -5,10 +5,11 @@
 study_prefix = "glioma"
 
 
-# The following section describes all tables that should be generated directly
-# from SQL files.
-
 [file_config.file_names]
+"loading tabular data" = [
+    "../resources/valuesets.toml"
+]
+
 "valuesets" = [
     "athena/glioma__valueset_casedef.sql",
     "athena/glioma__valueset_casedef_candidates.sql",
@@ -49,14 +50,14 @@ study_prefix = "glioma"
     "athena/glioma__sample_casedef_index_post.sql",
     "athena/glioma__sample_casedef_post.sql",
 ]
-"comorbidities of glioma cohort" = [
-    "athena/glioma__cohort_casedef_comorbidity.sql",
+"Computable phenotypes of glioma casedef cohort" = [
+    "athena/glioma__cohort_dx.sql",
+    "athena/glioma__cohort_rx.sql",
 ]
 "cube counts" = [
     "athena/glioma__cube_patient_casedef.sql",
     "athena/glioma__cube_encounter_casedef.sql",
-    "athena/glioma__cube_documentreference_sample_casedef_index_post.sql",
+    "athena/glioma__cube_document_sample_casedef_index_post.sql",
 ]
 
 #[export_config]
-
