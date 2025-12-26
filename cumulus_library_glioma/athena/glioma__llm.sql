@@ -11,7 +11,10 @@ select      distinct
             result.behavior_mention.display         as behavior_display,
             result.grade_mention.has_mention        as grade_has_mention,
             result.grade_mention.code               as grade_code,
-            result.grade_mention.display            as grade_display
+            result.grade_mention.display            as grade_display,
+            note_ref,
+            encounter_ref,
+            subject_ref
 from        glioma__nlp_gpt_oss_120b;
 
 create or replace view glioma__llm_variant as
@@ -58,7 +61,7 @@ select      distinct
             drug.end_date,
             drug.quantity_unit,
             drug.quantity_value,
-            drug.rx_class
+            drug.rx_class,
             nlp.note_ref,
             nlp.encounter_ref,
             nlp.subject_ref

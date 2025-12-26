@@ -89,7 +89,17 @@ def make() -> List[Path]:
                        table_cols=['doc_type_code',
                                    'doc_type_display',
                                    'doc_type_system'],
-                      min_subject=10)
+                      min_subject=10),
+
+        cube_patient(source_table='glioma__llm',
+                     table_cols=['topography_has_mention',
+                                 'topography_display',
+                                 'morphology_has_mention',
+                                 'morphology_display',
+                                 'behavior_has_mention',
+                                 'behavior_display',
+                                 'grade_has_mention',
+                                 'grade_display'])
     ]
 
 if __name__ == "__main__":
