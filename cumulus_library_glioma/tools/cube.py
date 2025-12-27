@@ -95,7 +95,7 @@ def make() -> List[Path]:
                                  'rx_code',
                                  'rx_system',
                                  'rx_display',
-                                 'age_at_dx_min',
+                                 'age_at_visit',
                                  'gender',
                                  'race_display'],
                      min_subject=10),

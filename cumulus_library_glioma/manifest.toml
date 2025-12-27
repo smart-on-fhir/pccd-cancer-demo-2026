@@ -49,10 +49,14 @@ study_prefix = "glioma"
     "athena/glioma__cohort_dx.sql",
     "athena/glioma__cohort_rx.sql",
 ]
-"cube counts" = [
+"cube counts (casdef, " = [
     "athena/glioma__cube_patient_casedef.sql",
+    "athena/glioma__cube_patient_dx.sql",
+    "athena/glioma__cube_patient_rx.sql",
     "athena/glioma__cube_encounter_casedef.sql",
     "athena/glioma__cube_document_sample_casedef_index_post.sql",
+]
+"cube counts (LLM)" = [
     "athena/glioma__cube_patient_llm.sql",
     "athena/glioma__cube_patient_llm_drug.sql",
     "athena/glioma__cube_patient_llm_surgery.sql",
